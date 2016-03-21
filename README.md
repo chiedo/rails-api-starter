@@ -18,6 +18,22 @@ A starter project for building JSON Rails APIs with JWT for Rails 4.2.6 and Ruby
 
 7. You can override any environment variables such as the mysql port with a dotenv file if you wish. [Read more](https://github.com/bkeepers/dotenv)
 
+8. Add your pre-push hook by creating a file by the name of ```.git/hooks/pre-push```
+  
+  ```
+  #!/bin/bash
+
+  echo "Tests will be run to ensure you don't break the build"
+  if bundle exec rspec
+  then
+      exit 0 # push will execute
+  fi
+  echo "=================================="
+  echo "Please fix the tests and commit again. If you intended to commit broken tests, then run 'git push --no-verify'"
+  exit 1 # push will not execute
+  ```
+9. Run ```chmod +x .git/hooks/pre-push```
+
 ### Development
 
 1. Start your mysql server
