@@ -45,9 +45,3 @@ A starter project for building JSON Rails APIs with JWT for Rails 4.2.6 and Ruby
 Tests are written using rspec. You can run tests with the following:
 
   	bundle exec rspec
-
-A sample Postman collection is provided [here](../api-resources/rest/blog-app-rest.json.postman_collection) that you can import and use for testing the API. You will need to create/use a postman environment called 'auto-token' and use the sign-in endpoint via postman. This will set your token via a 'test' for all future requests that need it. See [environments](https://www.getpostman.com/docs/environments) and [tests](https://www.getpostman.com/docs/writing_tests) for more info.
-
-### Documentation
-
-You may view the REST API documentation that this back-end should conform to [here](https://rawgit.com/chiedolabs/blog-app-in-many-stacks/master/back-ends/api-resources/rest/build/index.html).
