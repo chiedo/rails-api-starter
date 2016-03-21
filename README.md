@@ -6,19 +6,21 @@ A starter project for building JSON Rails APIs with JWT for Rails 4.2.6 and Ruby
 
 1. Make sure you have an `RAILS_ENV` environment variable set on your machine and have it set to 'development'.
 
-2. Install your packages by running `bundle install`.
+1. Update config/database.yml where applicable. Mainly, you will want to change the default database name from rails_api_starter to something else.
 
-3. Make sure you have Mysql installed.
+1. Install your packages by running `bundle install`.
 
-4. Create the database with `bundle exec rake db:create`
+1. Make sure you have Mysql installed.
+
+1. Create the database with `bundle exec rake db:create`
  
-5. Migrate the database with `bundle exec rake db:migrate`
+1. Migrate the database with `bundle exec rake db:migrate`
 
-6. To get seed data run. `bundle exec rake db:seed`
+1. To get seed data run. `bundle exec rake db:seed`
 
-7. You can override any environment variables such as the mysql port with a dotenv file if you wish. [Read more](https://github.com/bkeepers/dotenv)
+1. You can override any environment variables such as the mysql port with a dotenv file if you wish. [Read more](https://github.com/bkeepers/dotenv)
 
-8. Add your pre-push hook by creating a file by the name of ```.git/hooks/pre-push```
+1. Add your pre-push hook by creating a file by the name of ```.git/hooks/pre-push```
   
   ```
   #!/bin/bash
@@ -32,7 +34,7 @@ A starter project for building JSON Rails APIs with JWT for Rails 4.2.6 and Ruby
   echo "Please fix the tests and commit again. If you intended to commit broken tests, then run 'git push --no-verify'"
   exit 1 # push will not execute
   ```
-9. Run ```chmod +x .git/hooks/pre-push```
+1. Run ```chmod +x .git/hooks/pre-push```
 
 ### Development
 
