@@ -5,14 +5,6 @@ class RegistrationsController < BaseController
     block_if_not_current_user(params[:id].to_i)
   end
 
-  # @description POST /users 
-  # @param {string} email - User's email. Must be unique and is required.  
-  # @param {string} name - User's name 
-  # @param {string} username - Username. Must be unique, it does not allow spaces, and is required. 
-  # @param {string} password - User Password. Must be at least 8 characters and is required. 
-  #      
-  # @returns JSON Object of User 
-  # @throws JSON Object of Errors
   def create
 
     @user = User.new(user_params)
@@ -31,24 +23,12 @@ class RegistrationsController < BaseController
 
   end
 
-  # @description GET /users/:id
-  # @param {string} id - User's id. Implicit Paramater. Is required.  
-  # @param {string} Authorization - Authentication token. Format is'Bearer: tokenvalue' and is required.
-  #      
-  # @returns JSON Object of User 
-  # @throws JSON Object of Errors
   def show
     @user = User.find(params[:id])   
     @auth_token = token_from_request
     render 'registrations/public'
   end
 
-  # @description PUT /users/:id
-  # @param {string} id - User's id. Implicit Paramater. Is required.  
-  # @param {string} Authorization - Authentication token. Format is'Bearer: tokenvalue' and is required.
-  #      
-  # @returns JSON Object of User 
-  # @throws JSON Object of Errors
   def update
     @user = User.find(current_user.id)
 
@@ -69,12 +49,6 @@ class RegistrationsController < BaseController
     end
   end
 
-  # @description DELETE /users/:id 
-  # @param {string} id - User's id. Implicit Paramater. Is required.  
-  # @param {string} Authorization - Authentication token. Format is'Bearer: tokenvalue' and is required.
-  #      
-  # @returns JSON Object  
-  # @throws JSON Object of Errors
   def destroy 
     @user = User.find(params[:id])
     if @user.destroy
@@ -87,7 +61,7 @@ class RegistrationsController < BaseController
   private
 
     def user_params
-      params.require(:user).permit(:email, :name, :username, :password, :password_confirmation)
+      params.require(:user).permit(:email, :name, :password, :password_confirmation)
     end
 
 end
