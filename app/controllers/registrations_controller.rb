@@ -30,7 +30,7 @@ class RegistrationsController < BaseController
   end
 
   def update
-    @user = User.find(current_user.id)
+    @user = User.find(params[:id])
 
     updates = user_params.as_json
   
