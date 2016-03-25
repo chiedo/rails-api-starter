@@ -31,7 +31,7 @@ gem "validates_existence", ">= 0.4"
 
 # User authentication
 gem 'devise', '~> 3.4.1'
-gem 'jwt', '~> 1.5.1'
+gem 'jwt', '~> 1.5.4'
 
 # For allowing CORS
 gem 'rack-cors', :require => 'rack/cors'
