@@ -7,6 +7,7 @@ Rails.application.routes.draw do
     #
     # Devise routes (User routes)
     #
+    devise_for :users, :controllers => {sessions: 'sessions', registrations: 'registrations'}
     match 'users/:id/', :to => 'registrations#update', via: :put
     match 'users/:id/', :to => 'registrations#destroy', via: :delete
     devise_scope :user do
