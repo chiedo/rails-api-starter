@@ -58,6 +58,63 @@ class RegistrationsController < BaseController
     end 
   end  
 
+  def send_password_reset_instructions
+    user = User.find_by(email: params[:user][:email])
+    if(user)
+      token = SecureRandom.urlsafe_base64(64)
+      user.reset_password_token = token
+      user.reset_password_sent_at = Time.now.utc
+      user.save(validate: false)
+      
+      PasswordResetMailer.password_reset_instructions_email(user, token).deliver
+      return render text: 'Success', status: 200 
+    else
+      render text: 'Not Found', status: 404
+    end
+  end
+
+  # Resets the password when given a user's email and reset password token
+  def reset_password
+    # Make sure there is an email with the user and reset token
+    user = User.find_by({
+      email: params[:user][:email],
+      reset_password_token: params[:user][:reset_password_token],
+    })
+   
+    if user
+      # Make sure the password reset token is only good for 10 minutes
+      if (Time.now > user.reset_password_sent_at + 10.minutes)
+        # Invalidate the password reset data
+        user.reset_password_token = nil
+        user.reset_password_sent_at = nil
+        user.save
+        return render json: {errors: {general: ['Your password reset token has expired']}}, status: 400
+      else
+        # If the password confirmation matches the password
+        if(params[:user][:password] === params[:user][:password_confirmation])
+          user.password = params[:user][:password]
+          # Invalidate the password reset data
+          user.reset_password_token = nil
+          user.reset_password_sent_at = nil
+          user.save
+          return render text: 'Success', status: 200 
+        else
+          # if the password confirmation was incorrect
+          return render json: {
+            errors: {
+              fields: {
+                password_confirmation: ['Your passwords did not match']
+              }
+            }
+          }
+        end
+
+      end
+    else
+      return render text: 'Not found', status: 404 
+    end
+  end
+
   private
 
     def user_params
