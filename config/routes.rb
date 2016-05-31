@@ -3,6 +3,10 @@ Rails.application.routes.draw do
   # By using the format false option, we restrict the api to only serving json
   # It is commen to namespace /api, however we did not to simplify over the many stacks.
   scope :format => false, :defaults => { format: :json} do
+
+    # Example routes
+    match 'public', :to => 'examples#example_public', via: :get
+    match 'private', :to => 'examples#example_private', via: :get
     
     #
     # Devise routes (User routes)

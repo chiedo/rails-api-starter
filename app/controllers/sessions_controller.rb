@@ -1,5 +1,6 @@
 class SessionsController < BaseController
   skip_before_filter :authenticate_user_from_token!
+  skip_before_filter :block_unauthenticated_user!
   before_filter :ensure_params_exist
 
   # @description POST /sign-in

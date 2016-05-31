@@ -4,6 +4,7 @@ class BaseController < ActionController::Base
   respond_to :json
 
   before_filter :authenticate_user_from_token!
+  before_filter :block_unauthenticated_user!
 
   # Return the standard error as json
   rescue_from StandardError do |exception|
@@ -11,7 +12,6 @@ class BaseController < ActionController::Base
   end
 
   protected
-
     # @params {Hash} errors key value errors
     # @returns Json Object with Errors and Status.
     def custom_err(errors)
@@ -43,14 +43,20 @@ class BaseController < ActionController::Base
     end
     alias_method :devise_user_signed_in?, :user_signed_in?
 
-    # Whether the current token matches the user's 
-    # email / password combination.
+    # Authenticate a user from their token
     #
     # @returns {ActiveRecord} User instance
     def authenticate_user_from_token!
       if claims and user = User.find_by(email: claims[0]['user']) and user.valid_password?(claims[0]['password'])
         @current_user = user
       else
+        @current_user = nil
+      end
+    end
+
+    # If a user is not logged in, return an unauthorized response
+    def block_unauthenticated_user!
+      unless current_user
         return render_unauthorized
       end
     end
