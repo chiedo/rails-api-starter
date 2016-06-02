@@ -67,10 +67,10 @@ class RegistrationsController < BaseController
       user.reset_password_sent_at = Time.now.utc
       user.save(validate: false)
       
-      PasswordResetMailer.password_reset_instructions_email(user, token).deliver
-      return render text: 'Success', status: 200 
+      PasswordResetMailer.password_reset_instructions_email(user, token).deliver_now
+      return render json: {'status':200}, status: 200 
     else
-      render text: 'Not Found', status: 404
+      render json: {'status': 404}, status: 404
     end
   end
 
@@ -98,7 +98,7 @@ class RegistrationsController < BaseController
           user.reset_password_token = nil
           user.reset_password_sent_at = nil
           user.save
-          return render text: 'Success', status: 200 
+          return render json: {status: 200 }, status: 200 
         else
           # if the password confirmation was incorrect
           return render json: {
@@ -112,7 +112,7 @@ class RegistrationsController < BaseController
 
       end
     else
-      return render text: 'Not found', status: 404 
+      return render json: {status: 404}, status: 404 
     end
   end
 
