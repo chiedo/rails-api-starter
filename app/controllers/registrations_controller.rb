@@ -68,9 +68,9 @@ class RegistrationsController < BaseController
       user.save(validate: false)
       
       PasswordResetMailer.password_reset_instructions_email(user, token).deliver_now
-      return render json: {'status':200}, status: 200 
+      return render json: {'status' =>200}, status: 200 
     else
-      render json: {'status': 404}, status: 404
+      render json: {'status' => 404}, status: 404
     end
   end
 
