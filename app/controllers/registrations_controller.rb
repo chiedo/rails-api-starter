@@ -1,7 +1,7 @@
 # app/controllers/api/registrations_controller.rb
 class RegistrationsController < BaseController
-  skip_before_filter :authenticate_user_from_token!, :only => [:create, :show]
-  skip_before_filter :block_unauthenticated_user!, :only => [:create, :show]
+  skip_before_filter :authenticate_user_from_token!, :only => [:create, :send_password_reset_instructions, :reset_password]
+  skip_before_filter :block_unauthenticated_user!, :only => [:create, :send_password_reset_instructions, :reset_password]
   before_action only: [:update] do
     block_if_not_current_user(params[:id].to_i)
   end

@@ -23,6 +23,10 @@ module ExampleApp
     # Do not swallow errors in after_commit/after_rollback callbacks.
     config.active_record.raise_in_transactional_callbacks = true
 
+    # Set the web client URL so that the API knows where to point users to in it's responses that involve
+    # a URL
+    config.web_client_url = ENV["WEB_CLIENT_URL"] ? ENV["WEB_CLIENT_URL"] : 'http://localhost:4001'
+
     # Decides what generators to use. No generators for tests
     config.generators do |g|
       g.test_framework nil

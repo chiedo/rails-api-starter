@@ -47,3 +47,7 @@ A starter project for building JSON Rails APIs with JWT for Rails 4.2.6 and Ruby
 Tests are written using rspec. You can run tests with the following:
 
   	bundle exec rspec
+
+### POSTMAN
+
+1. You can download a sample postman collection from the data directory
