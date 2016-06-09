@@ -63,7 +63,7 @@ class BaseController < ActionController::Base
 
     # Decodes your username and password from the token
     def claims
-      JWT.decode(token_from_request, "YOURSECRETKEY", true)
+      JWT.decode(token_from_request, Rails.application.secrets.secret_key_base, true)
     rescue
       nil
     end
@@ -76,7 +76,7 @@ class BaseController < ActionController::Base
     def jwt_token user, password
       # 2 Weeks
       expires = Time.now.to_i + (3600 * 24 * 14)
-      JWT.encode({:user => user.email, :password => password, :exp => expires}, "YOURSECRETKEY", 'HS256')
+      JWT.encode({:user => user.email, :password => password, :exp => expires}, Rails.application.secrets.secret_key_base, 'HS256')
     end
 
     # Renders an error response if unauthorized

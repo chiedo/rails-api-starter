@@ -8,6 +8,13 @@ Bundler.require(*Rails.groups)
 
 module ExampleApp
   class Application < Rails::Application
+    
+    # If secret key base is not set up, freak out if the enviroment is production
+    unless(ENV["SECRET_KEY_BASE"])
+      if(ENV["RAILS_ENV"] == 'production')
+        abort("You must set a SECRET_KEY_BASE environment variable. Make it long and strong. Security is important.");
+      end
+    end
     # Settings in config/environments/* take precedence over those specified here.
     # Application configuration should go into files in config/initializers
     # -- all .rb files in that directory are automatically loaded.
