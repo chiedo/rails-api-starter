@@ -47,7 +47,7 @@ class BaseController < ActionController::Base
     #
     # @returns {ActiveRecord} User instance
     def authenticate_user_from_token!
-      if claims and user = User.find_by(email: claims[0]['user']) and user.valid_password?(claims[0]['password'])
+      if claims and user = User.find_by(email: claims[0]['user'])
         @current_user = user
       else
         @current_user = nil
@@ -71,12 +71,11 @@ class BaseController < ActionController::Base
     # Endcodes your User and Password into a token that last 2 weeks.
     #
     # @params {string} user hash
-    # @params {string} password
     # @returns {string} - The encoded token
-    def jwt_token user, password
+    def jwt_token user
       # 2 Weeks
       expires = Time.now.to_i + (3600 * 24 * 14)
-      JWT.encode({:user => user.email, :password => password, :exp => expires}, Rails.application.secrets.secret_key_base, 'HS256')
+      JWT.encode({:user => user.email, :exp => expires}, Rails.application.secrets.secret_key_base, 'HS256')
     end
 
     # Renders an error response if unauthorized
