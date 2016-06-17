@@ -11,7 +11,7 @@ class RegistrationsController < BaseController
     @user = User.new(user_params)
 
     if(@user.save)
-      @auth_token = jwt_token(@user, user_params['password'])
+      @auth_token = jwt_token(@user)
       @data = @user.as_json
       @data['token'] = @auth_token
 
