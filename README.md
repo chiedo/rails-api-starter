@@ -1,5 +1,7 @@
 # Rails API Starter.
 
+NO LONGER MAINTAINED. The Rails Rest portion of <a href="https://github.com/chiedolabs/blog-app-in-many-stacks/tree/master/back-ends/rails-rest">Blog App With Many Stacks</a> is now the Replacement.
+
 A starter project for building JSON Rails APIs with JWT for Rails 4.2.6 and Ruby 2.2
 
 ### Setup
