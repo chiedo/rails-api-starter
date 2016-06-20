@@ -49,17 +49,21 @@ class BaseController < ActionController::Base
     def authenticate_user_from_token!
       decoded = claims
       
-      # XSRF Check before authenticating
-      xsrf_token = BCrypt::Password.new(decoded[0]['xsrf_token'])
-      unless(xsrf_token == xsrf_token_from_request)
-        return nil
-      end
+      if(decoded)
+        # XSRF Check before authenticating
+        xsrf_token = BCrypt::Password.new(decoded[0]['xsrf_token'])
+        unless(xsrf_token == xsrf_token_from_request)
+          return nil
+        end
 
-      #Attempt to authenticate after the XSRF Check
-      if decoded and user = User.find_by(email: decoded[0]['email'], id: decoded[0]['id'])
-        @current_user = user
+        #Attempt to authenticate after the XSRF Check
+        if user = User.find_by(email: decoded[0]['email'], id: decoded[0]['id'])
+          @current_user = user
+        else
+          @current_user = nil
+        end
       else
-        @current_user = nil
+        return nil
       end
     end
 

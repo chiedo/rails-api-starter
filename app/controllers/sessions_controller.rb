@@ -1,7 +1,7 @@
 class SessionsController < BaseController
-  skip_before_filter :authenticate_user_from_token!
-  skip_before_filter :block_unauthenticated_user!
-  before_filter :ensure_params_exist
+  skip_before_filter :authenticate_user_from_token!, :only => 'create'
+  skip_before_filter :block_unauthenticated_user!, :only => 'create'
+  before_filter :ensure_params_exist, :only => 'create'
 
   # @description POST /sign-in
   # @param {string} id - User's id. Implicit Paramater. Is required.  
@@ -16,6 +16,12 @@ class SessionsController < BaseController
     # Create the tokens
     @xsrf_token = xsrf_token()
     @jwt_token = jwt_token(@user, @xsrf_token)
+  end
+
+  def destroy
+    cookies.delete :jwt_token
+
+    return render json: {:success => true}
   end
 
   private

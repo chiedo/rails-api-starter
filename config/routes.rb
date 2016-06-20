@@ -19,5 +19,6 @@ Rails.application.routes.draw do
 
     # Authentication routes
     post 'sign-in', to: 'sessions#create'
+    post 'sign-out', to: 'sessions#destroy'
   end
 end
