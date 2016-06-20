@@ -9,14 +9,15 @@ Rails.application.routes.draw do
     match 'private', :to => 'examples#example_private', via: :get
     
     #
-    # Devise routes (User routes)
+    # (User routes)
     #
+    match 'users/', :to => 'registrations#create', via: :post
     match 'users/:id/', :to => 'registrations#update', via: :put
     match 'users/:id/', :to => 'registrations#destroy', via: :delete
     match 'users/send-password-reset-email', :to => 'registrations#send_password_reset_instructions', via: :post
     match 'users/reset-password', :to => 'registrations#reset_password', via: :post
-    devise_scope :user do
-      post 'sign-in', to: 'sessions#create'
-    end  
+
+    # Authentication routes
+    post 'sign-in', to: 'sessions#create'
   end
 end

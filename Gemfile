@@ -33,6 +33,9 @@ gem 'jwt', '~> 1.5.4'
 # For allowing CORS
 gem 'rack-cors', :require => 'rack/cors'
 
+# Duh
+gem 'bcrypt', '~> 3.1'
+
 group :development, :test do
 
   gem 'better_errors', '~> 2.1.1'

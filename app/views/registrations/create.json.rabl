@@ -4,4 +4,5 @@ node(:user) {
   partial('registrations/user-base', :object => @user)
 }
 
-node(:token) { @auth_token}
+node(:token) { @jwt_token}
+node(:xsrf_token) { @xsrf_token }

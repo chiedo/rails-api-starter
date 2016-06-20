@@ -27,7 +27,7 @@ class BaseController < ActionController::Base
     #
     # @returns {ActiveRecord} User instance
     def current_user
-      if token_from_request.blank?
+      if jwt_token_from_request.blank?
         nil
       else
         authenticate_user_from_token!
@@ -47,7 +47,16 @@ class BaseController < ActionController::Base
     #
     # @returns {ActiveRecord} User instance
     def authenticate_user_from_token!
-      if claims and user = User.find_by(email: claims[0]['email'], id: claims[0]['id'])
+      decoded = claims
+      
+      # XSRF Check before authenticating
+      xsrf_token = BCrypt::Password.new(decoded[0]['xsrf_token'])
+      unless(xsrf_token == xsrf_token_from_request)
+        return nil
+      end
+
+      #Attempt to authenticate after the XSRF Check
+      if decoded and user = User.find_by(email: decoded[0]['email'], id: decoded[0]['id'])
         @current_user = user
       else
         @current_user = nil
@@ -61,9 +70,9 @@ class BaseController < ActionController::Base
       end
     end
 
-    # Decodes your username and password from the token
+    # Decodes your data from the token
     def claims
-      JWT.decode(token_from_request, Rails.application.secrets.secret_key_base, true)
+      JWT.decode(jwt_token_from_request, Rails.application.secrets.secret_key_base, true)
     rescue
       nil
     end
@@ -71,11 +80,32 @@ class BaseController < ActionController::Base
     # Endcodes your User and Password into a token that last 2 weeks.
     #
     # @params {string} user hash
+    # @params {string} xsrf_token The token for protecting from xsrf requests
     # @returns {string} - The encoded token
-    def jwt_token user
+    def jwt_token user, xsrf_token
       # 2 Weeks
       expires = Time.now.to_i + (3600 * 24 * 14)
-      JWT.encode({:email => user.email, :id => user.id, :exp => expires}, Rails.application.secrets.secret_key_base, 'HS256')
+      token = JWT.encode(
+        {
+          :email => user.email,
+          :id => user.id,
+          :exp => expires,
+          # Hash the xsrf token so that it can't be read from the jwt
+          :xsrf_token => BCrypt::Password.create(xsrf_token),
+        },
+        Rails.application.secrets.secret_key_base, 'HS256',
+      )
+
+      # Set a cookie on the client for the jwt token.
+      # We will let the client remove the token when invalidated
+      cookies["jwt_token"] = { :value => token, :httponly => true, :expires => 1.years.from_now }
+
+      return token
+    end
+    
+    # Generate an XSRF Token
+    def xsrf_token
+      SecureRandom.urlsafe_base64 + SecureRandom.urlsafe_base64 + SecureRandom.urlsafe_base64
     end
 
     # Renders an error response if unauthorized
@@ -89,19 +119,43 @@ class BaseController < ActionController::Base
       render json: payload, status: 404
     end    
 
-    # Returns a token for the logged in user
+    # Returns a jwt token for the logged in user
     #
     # @returns {string}
-    def token_from_request
-      # Accepts the token either from the header or a query var
+    def jwt_token_from_request
+      # Accepts the token either from the header, a query var or a cookie
       # Header authorization must be in the following format
       # Authorization: Bearer {yourtokenhere}
+
+      # Check if the JWT was sent via a header
       auth_header = request.headers['Authorization'] and token = auth_header.split(' ').last
+
+      #Check if the JWT was sent via a query var
       if(token.to_s.empty?)
         token = request.parameters["token"]
       end
+      
+      # Check if the JWT was sent via a cookie
+      if(token.to_s.empty?)
+        token = cookies['jwt_token']
+      end
 
-      token
+      return token
+    end
+
+    # Returns an xsrf_token for the logged in user
+    #
+    # @returns {string}
+    def xsrf_token_from_request
+      # Accepts the token either from the header or a query var
+      # Header authorization must be in the following format
+      token = request.headers['X-XSRF-TOKEN']
+      
+      if(token.to_s.empty?)
+        token = request.parameters["xsrf_token"]
+      end
+
+      return token
     end
     
     # #

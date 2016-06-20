@@ -50,4 +50,8 @@ Tests are written using rspec. You can run tests with the following:
 
 ### POSTMAN
 
-1. You can download a sample postman collection from the data directory
+1. You can download a sample postman collection from the data directory.
+
+### Authentication
+
+Authentication is handled via JWT and an XSRF Token. Analyzing in postman should suffice. You will need to make sure you have the 'Interceptor' extension installed since the JWT is being sent via a cookie.

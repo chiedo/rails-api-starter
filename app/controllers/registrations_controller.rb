@@ -11,9 +11,8 @@ class RegistrationsController < BaseController
     @user = User.new(user_params)
 
     if(@user.save)
-      @auth_token = jwt_token(@user)
-      @data = @user.as_json
-      @data['token'] = @auth_token
+      @xsrf_token = xsrf_token()
+      @jwt_token = jwt_token(@user, @xsrf_token)
 
     # Successful JSON in /views/registrations
     else
@@ -21,27 +20,23 @@ class RegistrationsController < BaseController
         'registrations/error'
       end
     end
-
   end
 
   def show
     @user = User.find(params[:id])   
-    @auth_token = token_from_request
+    @jwt_token = token_from_request
     render 'registrations/public'
   end
 
   def update
+    @xsrf_token = xsrf_token()
     @user = User.find(params[:id])
 
     updates = user_params.as_json
   
     if @user.update(updates)
       # We need to update the token since it depends on user data
-      if(user_params.has_key?('password'))
-        @auth_token = jwt_token(@user, user_params[:password])
-      else
-        @auth_token = jwt_token(@user, claims[0]['password'])
-      end
+      @jwt_token = jwt_token(@user, @xsrf_token)
       
       render 'registrations/show'
       

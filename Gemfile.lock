@@ -167,6 +167,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  bcrypt (~> 3.1)
   better_errors (~> 2.1.1)
   byebug (~> 8.2.4)
   database_cleaner (~> 1.5.3)

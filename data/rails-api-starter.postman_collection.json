@@ -1,151 +1,186 @@
 {
-	"id": "aa9235fa-3f2a-5a3e-e7f4-047f2837f9f8",
-	"name": "rails-api-starter",
-	"description": "",
-	"order": [
-		"819f918f-d103-dc6a-0881-2d072d47170c",
-		"c852a543-2cfc-7091-fd51-60b98f73bf12",
-		"00561589-b74f-9606-9b70-9d6490ed8233",
-		"a5438504-1882-92e2-3524-07b1492a184a",
-		"357cb681-bfc3-0e21-6fe3-120076abe14e"
-	],
-	"folders": [],
-	"timestamp": 1464704228420,
-	"owner": 0,
-	"remoteLink": "",
-	"public": false,
-	"requests": [
+	"variables": [],
+	"info": {
+		"name": "rails-api-starter",
+		"_postman_id": "aa9235fa-3f2a-5a3e-e7f4-047f2837f9f8",
+		"description": "",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+	},
+	"item": [
 		{
-			"id": "00561589-b74f-9606-9b70-9d6490ed8233",
-			"headers": "Authorization: Bearer: {{token}}\n",
-			"url": "http://localhost:8000/private",
-			"preRequestScript": null,
-			"pathVariables": {},
-			"method": "GET",
-			"data": null,
-			"dataMode": "params",
-			"version": 2,
-			"tests": null,
-			"currentHelper": "normal",
-			"helperAttributes": {},
-			"time": 1464704300058,
-			"name": "Private",
-			"description": "",
-			"collectionId": "aa9235fa-3f2a-5a3e-e7f4-047f2837f9f8",
-			"responses": []
-		},
-		{
-			"id": "357cb681-bfc3-0e21-6fe3-120076abe14e",
-			"headers": "Content-Type: application/json\n",
-			"url": "http://localhost:8000/users/reset-password",
-			"pathVariables": {},
-			"preRequestScript": "",
-			"method": "POST",
-			"collectionId": "aa9235fa-3f2a-5a3e-e7f4-047f2837f9f8",
-			"data": [
-				{
-					"key": "user[email]",
-					"value": "test@test.com",
-					"type": "text",
-					"enabled": true
-				},
-				{
-					"key": "user[reset_password_token]",
-					"value": "ASe2L4hxywcUnNTWOSi6raE2lki349nzrur5LbxAnWT9Z9BZO2wRD-7M6Aweheu8xF75Ty8r6KH_9geISB8WIQ",
-					"type": "text",
-					"enabled": true
-				},
-				{
-					"key": "user[password]",
-					"value": "testfour",
-					"type": "text",
-					"enabled": true
-				},
-				{
-					"key": "user[password_confirmation]",
-					"value": "testfour",
-					"type": "text",
-					"enabled": true
-				}
-			],
-			"dataMode": "urlencoded",
-			"name": "Reset Password",
-			"description": "",
-			"descriptionFormat": "html",
-			"time": 1464876561749,
-			"version": 2,
-			"responses": [],
-			"tests": "",
-			"currentHelper": "normal",
-			"helperAttributes": {}
-		},
-		{
-			"id": "819f918f-d103-dc6a-0881-2d072d47170c",
-			"headers": "Content-Type: application/json\n",
-			"url": "http://localhost:8000/sign-in",
-			"pathVariables": {},
-			"preRequestScript": "",
-			"method": "POST",
-			"collectionId": "aa9235fa-3f2a-5a3e-e7f4-047f2837f9f8",
-			"data": [],
-			"dataMode": "raw",
 			"name": "Sign in",
-			"description": "",
-			"descriptionFormat": "html",
-			"time": 1464704238892,
-			"version": 2,
-			"responses": [],
-			"tests": "var data = JSON.parse(responseBody);\npostman.setEnvironmentVariable(\"token\", data.token);",
-			"currentHelper": "normal",
-			"helperAttributes": {},
-			"rawModeData": "{\"user\" : {\n    \"email\": \"test@test.com\",\n    \"password\": \"testtest\"\n}\n}"
-		},
-		{
-			"id": "a5438504-1882-92e2-3524-07b1492a184a",
-			"headers": "Content-Type: application/json\n",
-			"url": "http://localhost:8000/users/send-password-reset-email",
-			"pathVariables": {},
-			"preRequestScript": "",
-			"method": "POST",
-			"collectionId": "aa9235fa-3f2a-5a3e-e7f4-047f2837f9f8",
-			"data": [
+			"event": [
 				{
-					"key": "user[email]",
-					"value": "test@test.com",
-					"type": "text",
-					"enabled": true
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": "var data = JSON.parse(responseBody);\npostman.setEnvironmentVariable(\"token\", data.token);\npostman.setEnvironmentVariable(\"xsrf_token\", data.xsrf_token);"
+					}
 				}
 			],
-			"dataMode": "urlencoded",
-			"name": "send password reset",
-			"description": "",
-			"descriptionFormat": "html",
-			"time": 1464876384312,
-			"version": 2,
-			"responses": [],
-			"tests": "",
-			"currentHelper": "normal",
-			"helperAttributes": {}
+			"request": {
+				"url": "http://localhost:8000/sign-in",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"user\" : {\n    \"email\": \"test@test.com\",\n    \"password\": \"testtest\"\n}\n}"
+				},
+				"description": ""
+			},
+			"response": []
 		},
 		{
-			"id": "c852a543-2cfc-7091-fd51-60b98f73bf12",
-			"headers": "Authorization: Bearer: {{token}}\n",
-			"url": "http://localhost:8000/public",
-			"pathVariables": {},
-			"preRequestScript": null,
-			"method": "GET",
-			"collectionId": "aa9235fa-3f2a-5a3e-e7f4-047f2837f9f8",
-			"data": null,
-			"dataMode": "params",
 			"name": "Public",
-			"description": "",
-			"descriptionFormat": "html",
-			"time": 1464704286290,
-			"version": 2,
-			"responses": [],
-			"tests": null,
-			"currentHelper": "normal",
-			"helperAttributes": {}
+			"request": {
+				"url": "http://localhost:8000/public",
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer: {{token}}",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": []
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Private",
+			"request": {
+				"url": "http://localhost:8000/private",
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer: {{token}}",
+						"description": ""
+					},
+					{
+						"key": "X-XSRF-TOKEN",
+						"value": "{{xsrf_token}}",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": []
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "send password reset",
+			"request": {
+				"url": "http://localhost:8000/users/send-password-reset-email",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "user[email]",
+							"value": "test@test.com",
+							"type": "text",
+							"enabled": true
+						}
+					]
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Reset Password",
+			"request": {
+				"url": "http://localhost:8000/users/reset-password",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "user[email]",
+							"value": "test@test.com",
+							"type": "text",
+							"enabled": true
+						},
+						{
+							"key": "user[reset_password_token]",
+							"value": "ASe2L4hxywcUnNTWOSi6raE2lki349nzrur5LbxAnWT9Z9BZO2wRD-7M6Aweheu8xF75Ty8r6KH_9geISB8WIQ",
+							"type": "text",
+							"enabled": true
+						},
+						{
+							"key": "user[password]",
+							"value": "testfour",
+							"type": "text",
+							"enabled": true
+						},
+						{
+							"key": "user[password_confirmation]",
+							"value": "testfour",
+							"type": "text",
+							"enabled": true
+						}
+					]
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Sign Up",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": "var data = JSON.parse(responseBody);\npostman.setEnvironmentVariable(\"token\", data.token);"
+					}
+				}
+			],
+			"request": {
+				"url": "http://localhost:8000/users",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"user\" : {\n    \"email\": \"test@test.com\",\n    \"password\": \"testtest\"\n}\n}"
+				},
+				"description": ""
+			},
+			"response": []
 		}
 	]
 }
